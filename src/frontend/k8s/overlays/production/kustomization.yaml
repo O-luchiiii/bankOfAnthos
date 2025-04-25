@@ -19,7 +19,6 @@ resources:
   - backend-config.yaml
   - frontend-config.yaml
   - frontend-ingress.yaml
-  - managed-certificate.yaml
 components:
   - ../../../../components/production
 patchesStrategicMerge:
