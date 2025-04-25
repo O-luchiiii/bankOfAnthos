@@ -1,0 +1,116 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: populate-ledger-db
+  annotations:
+    autopilot.gke.io/resource-adjustment: '{"input":{"containers":[{"limits":{"cpu":"250m","ephemeral-storage":"1Gi","memory":"100Mi"},"requests":{"cpu":"250m","ephemeral-storage":"1Gi","memory":"100Mi"},"name":"cloud-sql-proxy"},{"limits":{"cpu":"100m","ephemeral-storage":"1Gi","memory":"256Mi"},"requests":{"cpu":"100m","ephemeral-storage":"1Gi","memory":"256Mi"},"name":"populate-ledger-db"}]},"output":{"containers":[{"limits":{"cpu":"250m","ephemeral-storage":"1Gi","memory":"103Mi"},"requests":{"cpu":"250m","ephemeral-storage":"1Gi","memory":"103Mi"},"name":"cloud-sql-proxy"},{"limits":{"cpu":"100m","ephemeral-storage":"1Gi","memory":"256Mi"},"requests":{"cpu":"100m","ephemeral-storage":"1Gi","memory":"256Mi"},"name":"populate-ledger-db"}]},"computeClassAtAdmission":"Default","modified":true}'
+    autopilot.gke.io/warden-version: 32.15.0-gke.2
+spec:
+  activeDeadlineSeconds: 86400
+  backoffLimit: 10
+  completionMode: NonIndexed
+  completions: 1
+  manualSelector: false
+  parallelism: 1
+  podReplacementPolicy: TerminatingOrFailed
+  suspend: false
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "false"
+        iam.gke.io/gcp-service-account: "gke-workload-staging@dreamdev-team2.iam.gserviceaccount.com"
+      labels:
+        cluster: staging
+    spec:
+      serviceAccountName: bank-of-anthos
+      terminationGracePeriodSeconds: 30
+      restartPolicy: Never
+      dnsPolicy: ClusterFirst
+      schedulerName: default-scheduler
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+      tolerations:
+      - effect: NoSchedule
+        key: kubernetes.io/arch
+        operator: Equal
+        value: amd64
+      volumes:
+      - name: scripts
+        configMap:
+          name: ledger-schema-config
+          defaultMode: 420
+      containers:
+      - name: cloud-sql-proxy
+        image: gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.8.0-alpine@sha256:bd14f09aa889b490a361522293cc4aa539937b6d64bc740794843ac814e58f6f
+        imagePullPolicy: IfNotPresent
+        args:
+        - "--port=5432"
+        - "--quitquitquit"
+        env:
+        - name: CSQL_PROXY_INSTANCE_CONNECTION_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: cloud-sql-admin
+              key: connectionName
+        resources:
+          requests:
+            cpu: 250m
+            memory: 103Mi
+            ephemeral-storage: 1Gi
+          limits:
+            cpu: 250m
+            memory: 103Mi
+            ephemeral-storage: 1Gi
+        securityContext:
+          capabilities:
+            drop:
+            - NET_RAW
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      - name: populate-ledger-db
+        image: postgres:16.8-alpine@sha256:3b057e1c2c6dfee60a30950096f3fab33be141dbb0fdd7af3d477083de94166c
+        imagePullPolicy: IfNotPresent
+        command:
+        - bash
+        - -c
+        - ". /scripts/initialize-database.sh 127.0.0.1 5432 ledger-db"
+        env:
+        - name: PGHOSTADDR
+          value: "127.0.0.1"
+        - name: PGPASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: ledger-db-config
+              key: POSTGRES_PASSWORD
+        - name: PGUSER
+          valueFrom:
+            configMapKeyRef:
+              name: ledger-db-config
+              key: POSTGRES_USER
+        envFrom:
+        - configMapRef:
+            name: demo-data-config
+        - configMapRef:
+            name: environment-config
+        - configMapRef:
+            name: ledger-db-config
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+            ephemeral-storage: 1Gi
+          limits:
+            cpu: 100m
+            memory: 256Mi
+            ephemeral-storage: 1Gi
+        securityContext:
+          capabilities:
+            drop:
+            - NET_RAW
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - name: scripts
+          mountPath: /scripts
+          readOnly: true

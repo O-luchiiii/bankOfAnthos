@@ -14,7 +14,7 @@
 
 terraform {
   backend "gcs" {
-    bucket = "-boa-tf-state"
+    bucket = "dreamdev-team2-boa-tf-state"
     prefix = "bank-of-anthos"
   }
   required_providers {

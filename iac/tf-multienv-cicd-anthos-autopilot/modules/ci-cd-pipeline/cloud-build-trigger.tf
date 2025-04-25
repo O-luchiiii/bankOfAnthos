@@ -16,7 +16,7 @@
 resource "google_cloudbuild_trigger" "ci" {
   name     = "${local.service_clean}-ci"
   project  = var.project_id
-  location = var.region
+  #location = var.region
 
   github {
     owner = var.repo_owner

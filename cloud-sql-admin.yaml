@@ -1,0 +1,26 @@
+apiVersion: v1
+data:
+  connectionName: dreamdev-team2:us-central1:bank-of-anthos-db-staging
+
+kind: ConfigMap
+metadata:
+  annotations:
+    config.k8s.io/owning-inventory: config-management-system_root-sync
+    config.kubernetes.io/origin: |
+      path: configmap.yaml
+    configmanagement.gke.io/cluster-name: staging-membership
+    configmanagement.gke.io/managed: enabled
+    configmanagement.gke.io/source-path: iac/acm-multienv-cicd-anthos-autopilot/overlays/staging/v1_configmap_cloud-sql-admin.yaml
+    configmanagement.gke.io/token: 2f030b9c87a0905dbf6e598c970db142c7c3acab
+    configsync.gke.io/git-context: '{"repo":"https://www.github.com/O-luchiiii/bankOfAnthos","branch":"main","rev":"HEAD"}'
+    configsync.gke.io/manager: :root
+    configsync.gke.io/resource-id: _configmap_bank-of-anthos-staging_cloud-sql-admin
+  creationTimestamp: "2025-04-22T16:03:36Z"
+  labels:
+    app.kubernetes.io/managed-by: configmanagement.gke.io
+    applyset.kubernetes.io/part-of: applyset-e22zDPwKdkFqCzUzScEvOv2nZZ55DLNRI-wrMTICH94-v1
+    configsync.gke.io/declared-version: v1
+  name: cloud-sql-admin
+  namespace: bank-of-anthos-staging
+  resourceVersion: "1735441"
+  uid: 5b9577c7-04d1-48b2-94d0-4096e8bd59a1

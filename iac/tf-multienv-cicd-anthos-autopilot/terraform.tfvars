@@ -12,10 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-project_id = ""
-region     = ""
-zone       = "-b"
+project_id = "dreamdev-team2"
+region     = "us-central1"
+zone       = "us-central1-b"
 
-repo_owner  = "GoogleCloudPlatform"
-sync_repo   = "bank-of-anthos"
+repo_owner = "O-luchiiii"
+repo_name  = "bankOfAnthos"
+sync_repo  = "bankOfAnthos"
 sync_branch = "main"
