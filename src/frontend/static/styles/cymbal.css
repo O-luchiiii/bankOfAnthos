@@ -380,7 +380,7 @@ label {
 
 .form-control:focus {
   box-shadow: none;
-  border-color: #4b6aa3 !important;
+  border-color: #246df0 !important;
 }
 
 .input-group-text {
@@ -459,16 +459,141 @@ label {
 }
 
 /* RESPONSIVE */
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
   .container {
-      padding: 1rem;
-  }
-  
-  .card {
-      margin: 0;
+    max-width: 95%;
   }
   
   .header-title {
-      font-size: 1.75rem;
+    font-size: 1.8rem;
+  }
+  
+  .card {
+    margin-bottom: 1.25rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .container {
+    max-width: 100%;
+    padding: 1.25rem;
+  }
+  
+  .header-title {
+    font-size: 1.6rem;
+  }
+  
+  .table td {
+    font-size: 1rem !important;
+  }
+  
+  .table thead th {
+    font-size: 0.9rem;
+  }
+  
+  .nav-item {
+    font-size: 20px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+    max-width: 95%;
+  }
+  
+  .card {
+    margin: 0.75rem 0;
+    width: 100%;
+    min-width: 320px;
+  }
+  
+  .header-title {
+    font-size: 1.5rem;
+  }
+  
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    min-width: 100%;
+  }
+  
+  .table td, .table th {
+    white-space: nowrap;
+    min-width: 120px;
+  }
+  
+  .transaction-amount {
+    min-width: 140px;
+  }
+  
+  .navbar-top {
+    min-height: 70px;
+  }
+  
+  #account-user-name {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding: 0.75rem;
+  }
+  
+  .header-title {
+    font-size: 1.25rem;
+  }
+  
+  .card {
+    margin: 0.5rem 0;
+    border-radius: 12px;
+  }
+  
+  .table-sm td, .table-sm th {
+    padding: 0.75rem !important;
+  }
+  
+  .table td {
+    font-size: 0.9rem !important;
+  }
+  
+  .table thead th {
+    font-size: 0.8rem;
+  }
+  
+  .modal-content .modal-body {
+    padding: 15px 20px 0;
+  }
+  
+  .amount-font {
+    font-size: 24px !important;
+  }
+  
+  .amount-font::-webkit-input-placeholder {
+    font-size: 24px !important;
+  }
+  
+  .btn, .btn-primary, .card-button, .btn-block, form button {
+    padding: 0.6rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Add print media query for better printing */
+@media print {
+  .table td, .table th {
+    white-space: normal;
+  }
+  
+  .no-print {
+    display: none;
+  }
+  
+  .container {
+    width: 100%;
+    max-width: none;
+    padding: 0;
   }
 }
