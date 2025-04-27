@@ -64,7 +64,7 @@ def create_app():
     @app.route('/manifest.json')
     def serve_manifest():
         return send_from_directory('static', 'manifest.json')
-        
+
     @app.route('/version', methods=['GET'])
     def version():
         """
