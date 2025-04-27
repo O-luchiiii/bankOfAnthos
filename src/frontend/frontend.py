@@ -61,6 +61,10 @@ def create_app():
     # Disabling unused-variable for lines with route decorated functions
     # as pylint thinks they are unused
     # pylint: disable=unused-variable
+    @app.route('/manifest.json')
+    def serve_manifest():
+        return send_file('manifest.json', mimetype='application/manifest+json')
+        
     @app.route('/version', methods=['GET'])
     def version():
         """
