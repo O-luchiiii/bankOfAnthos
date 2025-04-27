@@ -63,7 +63,7 @@ def create_app():
     # pylint: disable=unused-variable
     @app.route('/manifest.json')
     def serve_manifest():
-        return send_file('manifest.json', mimetype='application/manifest+json')
+        return send_from_directory('static', 'manifest.json')
         
     @app.route('/version', methods=['GET'])
     def version():
