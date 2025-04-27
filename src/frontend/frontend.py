@@ -29,7 +29,7 @@ import requests
 from requests.exceptions import HTTPError, RequestException
 import jwt
 from flask import Flask, abort, jsonify, make_response, redirect, \
-    render_template, request, url_for
+    render_template, request, url_for, send_from_directory
 
 from opentelemetry import trace
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
