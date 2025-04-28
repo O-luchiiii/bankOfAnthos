@@ -597,3 +597,61 @@ label {
     padding: 0;
   }
 }
+
+/* dark mode */
+
+/* dark-mode.css or your main CSS file */
+.dark-mode {
+  background-color: #121212 !important;
+  color: #ffffff !important;
+}
+
+.dark-mode .navbar-top {
+  background-color: #1e1e1e !important;
+}
+
+.dark-mode .dropdown-menu,
+.dark-mode .navbar-brand,
+.dark-mode .nav-link,
+.dark-mode .dropdown-item {
+  background-color: #2a2a2a !important;
+  color: #ffffff !important;
+}
+
+.dark-mode .dropdown-item:hover {
+  background-color: #3a3a3a !important;
+}
+
+body.dark-mode {
+  background-color: #121212 !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .navbar-top {
+  background-color: #1e1e1e !important;
+  color: white;
+}
+
+body.dark-mode .nav-link,
+body.dark-mode .navbar-brand,
+body.dark-mode #account-user-name,
+body.dark-mode .footer,
+body.dark-mode .transaction-label-none,
+body.dark-mode .text-transaction-header {
+  color: #ffffff !important;
+}
+
+body.dark-mode .card {
+  background-color: #1e1e1e !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .btn-primary {
+  background-color: #00b347 !important;
+}
+
+body.dark-mode .btn-secondary {
+  background-color: #343434 !important;
+  color: white !important;
+  border-color: #343434 !important;
+}

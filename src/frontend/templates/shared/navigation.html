@@ -12,6 +12,14 @@
               Moniechoke
           </a>
         {% endif %}
+        <!-- Dark Mode Toggle Button (beside brand) -->
+        <button
+          id="theme-toggle"
+          class="btn btn-outline-secondary ml-3"
+          title="Toggle Dark Mode"
+        >
+          <span id="theme-icon">🌙</span>
+        </button>
         {% if name %}
           <button type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler navbar-toggler-right">
             <span class="material-icons">menu</span>
@@ -36,3 +44,22 @@
         </div>
       </nav>
     </header>
+
+    <!-- Dark Mode Script -->
+<script>
+  const toggleButton = document.getElementById("theme-toggle");
+  const themeIcon = document.getElementById("theme-icon");
+  const currentTheme = localStorage.getItem("theme");
+
+  if (currentTheme === "dark") {
+    document.body.classList.add("dark-mode");
+    themeIcon.textContent = "☀";
+  }
+
+  toggleButton?.addEventListener("click", () => {
+    document.body.classList.toggle("dark-mode");
+    const isDark = document.body.classList.contains("dark-mode");
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+    themeIcon.textContent = isDark ? "☀" : "🌙";
+  });
+</script>
