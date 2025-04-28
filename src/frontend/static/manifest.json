@@ -1,0 +1,25 @@
+{
+    "name": "Moniechoke",
+    "short_name": "Moniechoke",
+    "icons": [
+        {
+            "src": "/img/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/img/android-chrome-192x192.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "/img/apple-touch-icon.png",
+            "sizes": "180x180",
+            "type": "image/png"
+        }
+    ],
+    "start_url": "/",
+    "theme_color": "#002b62",
+    "background_color": "#ffffff",
+    "display": "standalone"
+}
