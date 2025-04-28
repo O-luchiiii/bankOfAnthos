@@ -635,7 +635,6 @@ body.dark-mode .navbar-top {
 body.dark-mode .nav-link,
 body.dark-mode .navbar-brand,
 body.dark-mode #account-user-name,
-body.dark-mode .footer,
 body.dark-mode .transaction-label-none,
 body.dark-mode .text-transaction-header {
   color: #ffffff !important;
@@ -654,4 +653,8 @@ body.dark-mode .btn-secondary {
   background-color: #343434 !important;
   color: white !important;
   border-color: #343434 !important;
+}
+body.dark-mode .footer {
+  background-color: #1e1e1e !important;
+ color: #ffffff !important;
 }
