@@ -1,16 +1,14 @@
-# Bank of Anthos
+# Moniechoke
 
-![GitHub branch check runs](https://img.shields.io/github/check-runs/GoogleCloudPlatform/bank-of-anthos/main)
+![GitHub branch check runs](https://img.shields.io/github/check-runs/O-luchiiii/bankOfAnthos/main)
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fcymbal-bank.fsi.cymbal.dev%2F&label=live%20demo
-)](https://cymbal-bank.fsi.cymbal.dev)
+)](http://34.9.39.47)
 
-**Bank of Anthos** is a sample HTTP-based web app that simulates a bank's payment processing network, allowing users to create artificial bank accounts and complete transactions.
+**Moniechoke** is a modern fintech application that helps users manage their finances, send money, and track expenses seamlessly. The platform provides an intuitive interface for digital banking, peer-to-peer payments, and financial analytics.
 
-Google uses this application to demonstrate how developers can modernize enterprise applications using Google Cloud products, including: [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine), [Anthos Service Mesh (ASM)](https://cloud.google.com/anthos/service-mesh), [Anthos Config Management (ACM)](https://cloud.google.com/anthos/config-management), [Migrate to Containers](https://cloud.google.com/migrate/containers), [Spring Cloud GCP](https://spring.io/projects/spring-cloud-gcp), [Cloud Operations](https://cloud.google.com/products/operations), [Cloud SQL](https://cloud.google.com/sql/docs), [Cloud Build](https://cloud.google.com/build), and [Cloud Deploy](https://cloud.google.com/deploy). This application works on any Kubernetes cluster.
+Built with cutting-edge technology, Moniechoke leverages cloud-native architecture using: [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine), [Anthos Service Mesh (ASM)](https://cloud.google.com/anthos/service-mesh), [Anthos Config Management (ACM)](https://cloud.google.com/anthos/config-management), [Migrate to Containers](https://cloud.google.com/migrate/containers), [Spring Cloud GCP](https://spring.io/projects/spring-cloud-gcp), [Cloud Operations](https://cloud.google.com/products/operations), [Cloud SQL](https://cloud.google.com/sql/docs), [Cloud Build](https://cloud.google.com/build), and [Cloud Deploy](https://cloud.google.com/deploy). This application works on any Kubernetes cluster.
 
-If you are using Bank of Anthos, please ★Star this repository to show your interest!
-
-**Note to Googlers:** Please fill out the form at [go/bank-of-anthos-form](https://goto2.corp.google.com/bank-of-anthos-form).
+If you are using Moniechoke, please ★Star this repository to show your support!
 
 ## Screenshots
 
@@ -25,21 +23,21 @@ If you are using Bank of Anthos, please ★Star this repository to show your int
 
 | Service                                                 | Language      | Description                                                                                                                                  |
 | ------------------------------------------------------- | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| [frontend](/src/frontend)                              | Python        | Exposes an HTTP server to serve the website. Contains login page, signup page, and home page.                                                |
-| [ledger-writer](/src/ledger/ledgerwriter)              | Java          | Accepts and validates incoming transactions before writing them to the ledger.                                                               |
-| [balance-reader](/src/ledger/balancereader)            | Java          | Provides efficient readable cache of user balances, as read from `ledger-db`.                                                                |
-| [transaction-history](/src/ledger/transactionhistory)  | Java          | Provides efficient readable cache of past transactions, as read from `ledger-db`.                                                            |
-| [ledger-db](/src/ledger/ledger-db)                     | PostgreSQL    | Ledger of all transactions. Option to pre-populate with transactions for demo users.                                                         |
-| [user-service](/src/accounts/userservice)              | Python        | Manages user accounts and authentication. Signs JWTs used for authentication by other services.                                              |
-| [contacts](/src/accounts/contacts)                     | Python        | Stores list of other accounts associated with a user. Used for drop down in "Send Payment" and "Deposit" forms.                              |
-| [accounts-db](/src/accounts/accounts-db)               | PostgreSQL    | Database for user accounts and associated data. Option to pre-populate with demo users.                                                      |
-| [loadgenerator](/src/loadgenerator)                    | Python/Locust | Continuously sends requests imitating users to the frontend. Periodically creates new accounts and simulates transactions between them.      |
+| [frontend](https://github.com/O-luchiiii/bankOfAnthos/tree/main/src/frontend)                              | Python        | Exposes an HTTP server to serve the website. Contains login page, signup page, and home page.                                                |
+| [ledger-writer](https://github.com/O-luchiiii/bankOfAnthos/tree/main/src/ledger/ledgerwriter)              | Java          | Accepts and validates incoming transactions before writing them to the ledger.                                                               |
+| [balance-reader](https://github.com/O-luchiiii/bankOfAnthos/tree/main/src/ledger/balancereader)            | Java          | Provides efficient readable cache of user balances, as read from `ledger-db`.                                                                |
+| [transaction-history](https://github.com/O-luchiiii/bankOfAnthos/tree/main/src/ledger/transactionhistory)  | Java          | Provides efficient readable cache of past transactions, as read from `ledger-db`.                                                            |
+| [ledger-db](https://github.com/O-luchiiii/bankOfAnthos/tree/main/src/ledger/ledger-db)                     | PostgreSQL    | Ledger of all transactions. Option to pre-populate with transactions for demo users.                                                         |
+| [user-service](https://github.com/O-luchiiii/bankOfAnthos/tree/main/src/accounts/userservice)              | Python        | Manages user accounts and authentication. Signs JWTs used for authentication by other services.                                              |
+| [contacts](https://github.com/O-luchiiii/bankOfAnthos/tree/main/src/accounts/contacts)                     | Python        | Stores list of other accounts associated with a user. Used for drop down in "Send Payment" and "Deposit" forms.                              |
+| [accounts-db](https://github.com/O-luchiiii/bankOfAnthos/tree/main/src/accounts/accounts-db)               | PostgreSQL    | Database for user accounts and associated data. Option to pre-populate with demo users.                                                      |
+| [loadgenerator](https://github.com/O-luchiiii/bankOfAnthos/tree/main/src/loadgenerator)                    | Python/Locust | Continuously sends requests imitating users to the frontend. Periodically creates new accounts and simulates transactions between them.      |
 
 ## Interactive quickstart (GKE)
 
-The following button opens up an interactive tutorial showing how to deploy Bank of Anthos in GKE:
+The following button opens up an interactive tutorial showing how to deploy Moniechoke in GKE:
 
-[![Open in Cloud Shell](https://gstatic.com/cloudssh/images/open-btn.svg)](https://ssh.cloud.google.com/cloudshell/editor?show=ide&cloudshell_git_repo=https://github.com/GoogleCloudPlatform/bank-of-anthos&cloudshell_workspace=.&cloudshell_tutorial=extras/cloudshell/tutorial.md)
+[![Open in Cloud Shell](https://gstatic.com/cloudssh/images/open-btn.svg)](https://ssh.cloud.google.com/cloudshell/editor?show=ide&cloudshell_git_repo=https://github.com/O-luchiiii/bankOfAnthos&cloudshell_workspace=.&cloudshell_tutorial=extras/cloudshell/tutorial.md)
 
 ## Quickstart (GKE)
 
@@ -47,11 +45,10 @@ The following button opens up an interactive tutorial showing how to deploy Bank
    - [Google Cloud project](https://cloud.google.com/resource-manager/docs/creating-managing-projects#creating_a_project).
    - Shell environment with `gcloud`, `git`, and `kubectl`.
 
-2. Clone the repository.
-
+2. Clone the repository:
    ```sh
-   git clone https://github.com/GoogleCloudPlatform/bank-of-anthos
-   cd bank-of-anthos/
+   git clone https://github.com/O-luchiiii/bankOfAnthos.git
+   cd bankOfAnthos/
    ```
 
 3. Set the Google Cloud project and region and ensure the Google Kubernetes Engine API is enabled.
@@ -74,7 +71,7 @@ The following button opens up an interactive tutorial showing how to deploy Bank
 
    Creating the cluster may take a few minutes.
 
-5. Deploy Bank of Anthos to the cluster.
+5. Deploy Moniechoke to the cluster.
 
    ```sh
    kubectl apply -f ./extras/jwt/jwt-secret.yaml
@@ -108,7 +105,7 @@ The following button opens up an interactive tutorial showing how to deploy Bank
    kubectl get service frontend | awk '{print $4}'
    ```
 
-   Visit `http://EXTERNAL_IP` in a web browser to access your instance of Bank of Anthos.
+   Visit `http://EXTERNAL_IP` in a web browser to access your instance of Moniechoke.
 
 8. Once you are done with it, delete the GKE cluster.
 
@@ -121,24 +118,24 @@ The following button opens up an interactive tutorial showing how to deploy Bank
 
 ## Additional deployment options
 
-- **Workload Identity**: [See these instructions.](/docs/workload-identity.md)
-- **Cloud SQL**: [See these instructions](/extras/cloudsql) to replace the in-cluster databases with hosted Google Cloud SQL.
-- **Multi Cluster with Cloud SQL**: [See these instructions](/extras/cloudsql-multicluster) to replicate the app across two regions using GKE, Multi Cluster Ingress, and Google Cloud SQL.
-- **Istio**: [See these instructions](/extras/istio) to configure an IngressGateway.
-- **Anthos Service Mesh**: ASM requires Workload Identity to be enabled in your GKE cluster. [See the workload identity instructions](/docs/workload-identity.md) to configure and deploy the app. Then, apply `extras/istio/` to your cluster to configure frontend ingress.
-- **Java Monolith (VM)**: We provide a version of this app where the three Java microservices are coupled together into one monolithic service, which you can deploy inside a VM (eg. Google Compute Engine). See the [ledgermonolith](/src/ledgermonolith) directory.
+- **Workload Identity**: [See these instructions.](https://github.com/O-luchiiii/bankOfAnthos/tree/main/docs/workload-identity.md)
+- **Cloud SQL**: [See these instructions](https://github.com/O-luchiiii/bankOfAnthos/tree/main/extras/cloudsql) to replace the in-cluster databases with hosted Google Cloud SQL.
+- **Multi Cluster with Cloud SQL**: [See these instructions](https://github.com/O-luchiiii/bankOfAnthos/tree/main/extras/cloudsql-multicluster) to replicate the app across two regions using GKE, Multi Cluster Ingress, and Google Cloud SQL.
+- **Istio**: [See these instructions](https://github.com/O-luchiiii/bankOfAnthos/tree/main/extras/istio) to configure an IngressGateway.
+- **Anthos Service Mesh**: ASM requires Workload Identity to be enabled in your GKE cluster. [See the workload identity instructions](https://github.com/O-luchiiii/bankOfAnthos/tree/main/docs/workload-identity.md) to configure and deploy the app. Then, apply `extras/istio/` to your cluster to configure frontend ingress.
+- **Java Monolith (VM)**: We provide a version of this app where the three Java microservices are coupled together into one monolithic service, which you can deploy inside a VM (eg. Google Compute Engine). See the [ledgermonolith](https://github.com/O-luchiiii/bankOfAnthos/tree/main/src/ledgermonolith) directory.
 
 ## Documentation
 
-<!-- This section is duplicated in the docs/ README: https://github.com/GoogleCloudPlatform/bank-of-anthos/blob/main/docs/README.md -->
+<!-- This section is duplicated in the docs/ README: https://github.com/O-luchiiii/bankOfAnthos/blob/main/docs/README.md -->
 
-- [Development](/docs/development.md) to learn how to run and develop this app locally.
-- [Environments](/docs/environments.md) to learn how to deploy on non-GKE clusters.
-- [Workload Identity](/docs/workload-identity.md) to learn how to set-up Workload Identity.
-- [CI/CD pipeline](/docs/ci-cd-pipeline.md) to learn details about and how to set-up the CI/CD pipeline.
-- [Troubleshooting](/docs/troubleshooting.md) to learn how to resolve common problems.
+- [Development](https://github.com/O-luchiiii/bankOfAnthos/tree/main/docs/development.md) to learn how to run and develop this app locally.
+- [Environments](https://github.com/O-luchiiii/bankOfAnthos/tree/main/docs/environments.md) to learn how to deploy on non-GKE clusters.
+- [Workload Identity](https://github.com/O-luchiiii/bankOfAnthos/tree/main/docs/workload-identity.md) to learn how to set-up Workload Identity.
+- [CI/CD pipeline](https://github.com/O-luchiiii/bankOfAnthos/tree/main/docs/ci-cd-pipeline.md) to learn details about and how to set-up the CI/CD pipeline.
+- [Troubleshooting](https://github.com/O-luchiiii/bankOfAnthos/tree/main/docs/troubleshooting.md) to learn how to resolve common problems.
 
-## Demos featuring Bank of Anthos
+## Demos featuring Moniechoke
 - [Tutorial: Explore Anthos (Google Cloud docs)](https://cloud.google.com/anthos/docs/tutorials/explore-anthos)
 - [Tutorial: Migrating a monolith VM to GKE](https://cloud.google.com/migrate/containers/docs/migrating-monolith-vm-overview-setup)
 - [Tutorial: Running distributed services on GKE private clusters using ASM](https://cloud.google.com/service-mesh/docs/distributed-services-private-clusters)
