@@ -516,7 +516,7 @@ def create_app():
                                               redirect_uri=redirect_uri,
                                               app_name=app_name,
                                               _external=True,
-                                              _scheme=app.config['SCHEME'])))
+                                              _scheme=app.config['SCHEME'])))                             
 
     @app.route('/consent', methods=['POST'])
     def consent():
