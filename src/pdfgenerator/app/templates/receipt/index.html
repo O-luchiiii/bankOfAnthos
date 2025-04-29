@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Transaction Receipt</title>
+    <style>
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            background-color: #ffffff;
+            color: #333333;
+            margin: 0;
+            padding: 20px;
+        }
+        .receipt-container {
+            max-width: 400px;
+            margin: 0 auto;
+            border: 1px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .logo img {
+            height: 40px;
+        }
+        .amount {
+            text-align: center;
+            font-size: 32px;
+            color: rgb(15, 45, 117);
+            font-weight: bold;
+            margin: 15px 0;
+        }
+        .status {
+            text-align: center;
+            font-size: 24px;
+            margin: 10px 0;
+            color: #333333;
+        }
+        .date {
+            text-align: center;
+            color: #666666;
+            margin-bottom: 30px;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+            padding: 5px 0;
+        }
+        .label {
+            color: #666666;
+        }
+        .value {
+            color: #333333;
+            font-weight: bold;
+            text-align: right;
+        }
+        .transaction-info {
+            margin-top: 30px;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 20px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #666666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="receipt-container">
+        <div class="logo">
+            <h1 style="color: rgb(15, 45, 117);">Moniechoke</h1>
+        </div>
+        
+        <div class="amount">${{ amount }}</div>
+        <div class="date">{{ date }}</div>
+        
+        <div class="info-row">
+            <span class="label">Type:</span>
+            <span class="value">{{ type }}</span>
+        </div>
+        
+        <div class="info-row">
+            <span class="label">Account:</span>
+            <span class="value">{{ account }}</span>
+        </div>
+        
+        <div class="info-row">
+            <span class="label">Label:</span>
+            <span class="value">{{ label }}</span>
+        </div>
+        
+        <div class="transaction-info">
+            <div class="info-row">
+                <span class="label">Transaction ID:</span>
+                <span class="value">{{ transaction_id }}</span>
+            </div>
+        </div>
+        
+        <div class="footer">
+            Thank you for using Moniechoke
+        </div>
+    </div>
+</body>
+</html>
