@@ -249,7 +249,7 @@ label {
 
 .list tr:hover {
   transition: all 0.3s ease-in;
-  background-color: #f8fafc;
+  /* background-color: #f8fafc; */
 }
 
 .text-credit {
@@ -611,10 +611,13 @@ label {
 }
 
 .dark-mode .dropdown-menu,
-.dark-mode .navbar-brand,
 .dark-mode .nav-link,
 .dark-mode .dropdown-item {
   background-color: #2a2a2a !important;
+  color: #ffffff !important;
+}
+/* changes */
+.dark-mode .navbar-brand{
   color: #ffffff !important;
 }
 
