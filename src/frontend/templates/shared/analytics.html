@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% include 'shared/html_head.html' %}
+    <!-- Add Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    {% include 'shared/platform_banner.html' %}
+    {% include 'shared/navigation.html' %}
+    
+    <!-- Main Content -->
+    <main class="container">
+      <div class="row col-lg-12 align-items-start top-row">
+        <div class="col-md-8">
+          <h2 class="header-title">Financial Analytics</h2>
+        </div>
+      </div>
+
+      <!-- Analytics Cards -->
+      <div class="row">
+        <!-- Spending Pattern Analysis -->
+        <div class="col-lg-6 mb-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Monthly Spending Pattern</h5>
+              <canvas id="spendingChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Budget Tracking -->
+        <div class="col-lg-6 mb-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Budget Overview</h5>
+              <canvas id="budgetChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Investment Portfolio -->
+        <div class="col-lg-6 mb-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Investment Distribution</h5>
+              <canvas id="investmentChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Financial Trends -->
+        <div class="col-lg-6 mb-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Financial Trends</h5>
+              <canvas id="trendChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    
+    {% include 'shared/footer.html' %}
+    {% include 'shared/scripts.html' %}
+    <script type="text/javascript">
+        window.transactionHistory = JSON.parse('{{ history|tojson|safe }}');
+    </script>
+    <script src="static/scripts/analytics.js"></script>
+
+  </body>
+</html>
