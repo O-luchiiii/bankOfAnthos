@@ -1,0 +1,101 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Bank Statement</title>
+    <meta name="description" content="Bank Statement">
+    <style>
+      body {
+        font-family: sans-serif;
+        margin: 20px;
+        color: #333;
+      }
+      .header {
+        text-align: center;
+        margin-bottom: 20px;
+        color: rgb(0, 43, 98); /* Theme color */
+      }
+      .statement-details {
+        margin-bottom: 20px;
+        line-height: 1.6;
+      }
+      .statement-details strong {
+        display: inline-block;
+        width: 150px; /* Adjust as needed */
+      }
+      h2 {
+         color: rgb(0, 43, 98); /* Theme color */
+         border-bottom: 2px solid rgb(0, 43, 98);
+         padding-bottom: 5px;
+         margin-top: 30px;
+         margin-bottom: 15px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
+      th, td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+         color: rgb(0, 43, 98); /* Theme color for table header text */
+      }
+      .amount {
+        text-align: right;
+      }
+      .debit {
+        color: red;
+      }
+      .credit {
+        color: green;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="header">
+      <h1>Moniechoke</h1>
+      <h2>Bank Statement</h2>
+    </div>
+
+    <div class="statement-details">
+      <div><strong>Account:</strong> {{ account_number }}</div>
+      <div><strong>Customer:</strong> {{ customer_name }}</div>
+      <div><strong>Statement Period:</strong> {{ statement_period_start.strftime('%Y-%m-%d') }} to {{ statement_period_end.strftime('%Y-%m-%d') }}</div>
+      <div><strong>Opening Balance:</strong> ${{ "%.2f"|format(opening_balance) }}</div>
+    </div>
+
+    <h2>Transactions</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Type</th>
+          <th>Account</th>
+          <th class="amount">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for t in transactions %}
+        <tr>
+          <td>{{ t.date.strftime('%Y-%m-%d') }}</td>
+          <td class="{{ t.type|lower }}">{{ t.type }}</td>
+          <td>{{ t.account }}</td>
+          <td class="amount {{ t.type|lower }}">
+            {% if t.type == 'DEBIT' %}
+              -${{ "%.2f"|format(t.amount|abs) }}
+            {% else %}
+              +${{ "%.2f"|format(t.amount|abs) }}
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+  </body>
+</html>
