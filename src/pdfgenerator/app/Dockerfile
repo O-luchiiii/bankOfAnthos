@@ -57,4 +57,4 @@ RUN mv ./deployment/nginx.conf /etc/nginx/ \
 
 USER python
 
-CMD [ "./deployment/start.sh" ]
+CMD ["gunicorn", "--bind", "0.0.0.0:${PORT}", "main:app"]
