@@ -695,7 +695,7 @@ def create_app():
     def format_currency(int_amount):
         """ Format the input currency in a human readable way """
         if int_amount is None:
-            return '$---'
+            return '₦---'
         amount_str = '${:0,.2f}'.format(abs(Decimal(int_amount)/100))
         if int_amount < 0:
             amount_str = '-' + amount_str
