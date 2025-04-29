@@ -126,7 +126,7 @@
 //     });
 
 //     // Budget Tracking Chart
-//     const budgetCtx = document.getElementById('budgetChart').getContext('2d');
+//     const budgetCtx = document.getElementById('budgetChart').getContext('2d') ₦;
 //     new Chart(budgetCtx, {
 //         type: 'doughnut',
 //         data: {
@@ -575,7 +575,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     beginAtZero: true,
                     ticks: {
                         callback: function(value) {
-                            return '$' + value.toFixed(2);
+                            return '₦' + value.toFixed(2);
                         }
                     }
                 }
@@ -600,7 +600,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 tooltip: {
                     callbacks: {
                         label: function(context) {
-                            return '$' + context.raw.toFixed(2);
+                            return '₦' + context.raw.toFixed(2);
                         }
                     }
                 }
@@ -625,7 +625,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 tooltip: {
                     callbacks: {
                         label: function(context) {
-                            return '$' + context.raw.toFixed(2);
+                            return '₦' + context.raw.toFixed(2);
                         }
                     }
                 }
@@ -658,7 +658,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     beginAtZero: true,
                     ticks: {
                         callback: function(value) {
-                            return '$' + value.toFixed(2);
+                            return '₦' + value.toFixed(2);
                         }
                     }
                 }
