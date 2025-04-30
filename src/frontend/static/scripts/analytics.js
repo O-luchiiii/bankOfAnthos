@@ -474,9 +474,9 @@ function processBudgetData(history) {
 
     history.forEach(transaction => {
         const amount = Math.abs(transaction.amount) / 100;
+        console.log(transaction.toAccountNum);
+        console.log(window.account_id);
         if (transaction.toAccountNum == window.account_id) {
-            console.log(transaction.toAccountNum);
-            console.log(window.account_id);
             totalDeposits += amount;
         } 
         if (transaction.fromAccountNum == window.account_id) {
