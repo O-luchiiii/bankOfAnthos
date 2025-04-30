@@ -800,7 +800,7 @@ def create_app():
                 return jsonify([]), 200
 
             return jsonify(api_response.json()), 200
-                
+
         except (HTTPError, RequestException) as e:
             app.logger.error('Error retrieving transaction history: %s', str(e))
             return jsonify([]), 500
