@@ -791,9 +791,7 @@ def create_app():
             # Create ApiCall and execute it
             api_call = ApiCall(
                 display_name="transaction_history",
-                api_request=ApiRequest(url=f'{app.config["HISTORY_URI"]}/{account_id}',
-                                           headers=hed,
-                                           timeout=app.config['BACKEND_TIMEOUT']),
+                api_request=api_request,
                 logger=app.logger
             )
             response = api_call.make_call()
