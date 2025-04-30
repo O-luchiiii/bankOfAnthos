@@ -176,6 +176,7 @@
         return response.json();
       })
       .then(historyData => {
+        console.log('Transaction history:', historyData);
         // Process transaction data
         if (Array.isArray(historyData)) {
           // Format transactions for the statement
