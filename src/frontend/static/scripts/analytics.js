@@ -735,7 +735,7 @@ function processBudgetData(history) {
             const amount = Math.abs(transaction.amount) / 100;
             
             // Check if this is a credit (money received) or debit (money spent)
-            if (transaction.toAccountNum === window.accountId) {
+            if (transaction.toAccountNum === account_id) {
                 monthlyDeposits += amount;
             } else {
                 monthlySpent += amount;
