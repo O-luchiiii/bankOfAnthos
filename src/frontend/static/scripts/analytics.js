@@ -474,16 +474,18 @@ function processBudgetData(history) {
 
     history.forEach(transaction => {
         const amount = Math.abs(transaction.amount) / 100;
-        if (transaction.fromAccountNum == window.account_id) {
+        if (transaction.toAccountNum == window.account_id) {
             totalDeposits += amount;
-        } else {
+        } 
+        if (transaction.fromAccountNum == window.account_id) {
             totalSpent += amount;
         }
     });
 
+    const remaining = totalDeposits - totalSpent;
     return {
         spent: totalSpent,
-        remaining: totalDeposits - totalSpent
+        remaining: remaining < 0 ? 0 : remaining
     };
 }
 
