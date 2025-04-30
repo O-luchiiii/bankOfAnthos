@@ -46,7 +46,7 @@ from api_call import ApiCall, ApiRequest
 from traced_thread_pool_executor import TracedThreadPoolExecutor
 
 # Import statement blueprint
-from .routes.statement import statement_bp
+from routes.statement import statement_bp
 
 # Local constants
 BALANCE_NAME = "balance"
