@@ -147,51 +147,71 @@
     generateBtn.textContent = 'Loading...';
     generateBtn.disabled = true;
 
-    // Fetch transaction history from the server
-    fetch('/transactions')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Failed to fetch transaction history');
-        }
-        return response.json();
-      })
-      .then(historyData => {
-        console.log('Transaction history:', historyData);
-        // Process transaction data
-        if (Array.isArray(historyData)) {
-          // Format transactions for the statement
-          statementData.transactions = historyData.map(t => {
-            // Determine transaction type
-            let type = 'Debit';
-            let account = 'Checking';
-
-            if (t.amount > 0) {
-              type = 'Credit';
-            }
-
-            // Format amount as currency
-            const amountNum = Math.abs(t.amount) / 100; // Convert cents to dollars
-            const amountStr = t.amount > 0 ? `$${amountNum.toFixed(2)}` : `-$${amountNum.toFixed(2)}`;
-
-            return {
-              "date": new Date(t.timestamp).toISOString().split('T')[0],
+    // Extract transaction data from the DOM instead of fetching from server
+    try {
+      console.log('Extracting transaction data from DOM');
+      
+      // Get transaction table from the DOM
+      const transactionTable = document.getElementById('transaction-list');
+      if (transactionTable) {
+        const transactionRows = transactionTable.querySelectorAll('tbody tr');
+        const extractedTransactions = [];
+        
+        // Process each transaction row
+        transactionRows.forEach(row => {
+          const dateCell = row.querySelector('td:nth-child(1)');
+          const descriptionCell = row.querySelector('td:nth-child(2)');
+          const amountCell = row.querySelector('td:nth-child(3)');
+          
+          if (dateCell && descriptionCell && amountCell) {
+            // Extract data from cells
+            const dateText = dateCell.textContent.trim();
+            const description = descriptionCell.textContent.trim();
+            const amountText = amountCell.textContent.trim();
+            
+            // Determine transaction type based on amount
+            const isCredit = !amountText.includes('-');
+            const type = isCredit ? 'Credit' : 'Debit';
+            const account = 'Checking';
+            
+            // Format amount properly
+            const amountStr = amountText;
+            
+            // Add to extracted transactions
+            extractedTransactions.push({
+              "date": dateText,
               "type": type,
               "account": account,
-              "label": t.label || (t.toAccountNum === accountNumber ? 'Deposit' : 'Payment'),
+              "label": description,
               "amount": amountStr
-            };
-          });
-
-          // Calculate opening and closing balances (simplified)
-          const currentBalance = document.getElementById('current-balance')?.textContent.trim() || '$0.00';
-          statementData.closingBalance = currentBalance;
-
-          // Estimate opening balance based on transactions
-          const totalChange = historyData.reduce((sum, t) => sum + (t.amount / 100), 0);
-          const currentBalanceNum = parseFloat(currentBalance.replace(/[^0-9.-]+/g, ''));
-          const openingBalanceNum = currentBalanceNum - totalChange;
-          statementData.openingBalance = `$${Math.abs(openingBalanceNum).toFixed(2)}`;
-        }
+            });
+          }
+        });
+        
+        console.log('Extracted transactions:', extractedTransactions);
+        statementData.transactions = extractedTransactions;
+        
+        // Calculate opening and closing balances (simplified)
+        const currentBalance = document.getElementById('current-balance')?.textContent.trim() || '$0.00';
+        statementData.closingBalance = currentBalance;
+        
+        // Estimate opening balance based on transactions
+        const totalChangeStr = extractedTransactions.reduce((sum, t) => {
+          const amount = parseFloat(t.amount.replace(/[^0-9.-]+/g, '')) * (t.type === 'Debit' ? -1 : 1);
+          return sum + amount;
+        }, 0);
+        
+        const currentBalanceNum = parseFloat(currentBalance.replace(/[^0-9.-]+/g, ''));
+        const openingBalanceNum = currentBalanceNum - totalChangeStr;
+        statementData.openingBalance = `$${Math.abs(openingBalanceNum).toFixed(2)}`;
+      } else {
+        console.warn('Transaction table not found in DOM, using empty transactions');
+        statementData.transactions = [];
+      }
+    } catch (error) {
+      console.error('Error extracting transaction data from DOM:', error);
+      statementData.transactions = [];
+    }
         dummydata = {
           "customerName": "John Doe",
           "accountNumber": "ACC123456",
@@ -295,5 +315,5 @@
         console.error('Error generating statement:', error);
         alert('Error generating statement. Please try again.');
       });
-  });
+
 </script>
