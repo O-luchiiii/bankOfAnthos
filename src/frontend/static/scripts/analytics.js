@@ -469,7 +469,7 @@ function processMonthlySpending(history) {
 }
 
 function processBudgetData(history) {
-    let totalDeposits = 0;
+    let totalDeposits = 222;
     let totalSpent = 0;
 
     history.forEach(transaction => {
