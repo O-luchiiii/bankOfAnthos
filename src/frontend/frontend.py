@@ -41,6 +41,9 @@ from opentelemetry.instrumentation.flask import FlaskInstrumentor
 from opentelemetry.instrumentation.requests import RequestsInstrumentor
 from opentelemetry.instrumentation.jinja2 import Jinja2Instrumentor
 
+# Import statement blueprint
+from .routes.statement import statement_bp
+
 # Local imports
 from api_call import ApiCall, ApiRequest
 from traced_thread_pool_executor import TracedThreadPoolExecutor
@@ -764,6 +767,43 @@ def create_app():
     app.logger.handlers = logging.getLogger('gunicorn.error').handlers
     app.logger.setLevel(logging.getLogger('gunicorn.error').level)
     app.logger.info('Starting frontend service.')
+    
+    # Register blueprints
+    app.register_blueprint(statement_bp)
+    
+    @app.route('/transactions', methods=['GET'])
+    def get_transactions():
+        """Retrieve transaction history for the current user."""
+        token = request.cookies.get(app.config['TOKEN_NAME'])
+        if token is None:
+            return redirect(url_for('login'))
+                
+        try:
+            account_id = decode_token(token)['acct']
+                
+            # Get transaction history
+            hed = {'Authorization': 'Bearer ' + token}
+            api_request = ApiRequest(
+                url=f'{app.config["HISTORY_URI"]}/{account_id}',
+                method='GET',
+                headers=hed,
+                timeout=app.config['BACKEND_TIMEOUT']
+            )
+                
+            api_response = ApiCall(
+                display_name='transaction_history',
+                api_request=api_request,
+                logger=app.logger
+            ).execute()
+                
+            if api_response is None:
+                return jsonify([]), 200
+                    
+            return jsonify(api_response.json()), 200
+                
+        except Exception as e:
+            app.logger.error('Error retrieving transaction history: %s', str(e))
+            return jsonify([]), 500
 
     # Set up tracing and export spans to Cloud Trace.
     if os.environ['ENABLE_TRACING'] == "true":

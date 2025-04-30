@@ -56,6 +56,9 @@
               </span>
             </a>
             <div class="dropdown-menu" aria-labelledby="accountDropdown">
+              <a class="dropdown-item" data-toggle="modal" data-target="#statementModal">
+                Generate Statement<i class="fa-icon-spacer fas fa-file-alt"></i>
+              </a>
               <form id="logout-form" method="POST" action="/logout">
                 <a
                   class="dropdown-item"
@@ -88,5 +91,197 @@
     const isDark = document.body.classList.contains("dark-mode");
     localStorage.setItem("theme", isDark ? "dark" : "light");
     themeIcon.textContent = isDark ? "☀" : "🌙";
+  });
+</script>
+
+<!-- Statement Modal -->
+<div class="modal fade" id="statementModal" tabindex="-1" role="dialog" aria-labelledby="statementModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="statementModalLabel">Generate Account Statement</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="statementForm">
+          <div class="form-group">
+            <label for="statementPeriod">Statement Period</label>
+            <select class="form-control" id="statementPeriod" required>
+              <option value="">Select a period</option>
+              <option value="January 1 - January 31, 2023">January 2023</option>
+              <option value="February 1 - February 28, 2023">February 2023</option>
+              <option value="March 1 - March 31, 2023">March 2023</option>
+              <option value="April 1 - April 30, 2023">April 2023</option>
+              <option value="May 1 - May 31, 2023">May 2023</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="generateStatementBtn">Generate</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Statement Generation Script -->
+<script>
+  document.getElementById('generateStatementBtn')?.addEventListener('click', function() {
+    const statementPeriod = document.getElementById('statementPeriod').value;
+    if (!statementPeriod) {
+      alert('Please select a statement period');
+      return;
+    }
+    
+    // Get current date
+    const today = new Date();
+    const formattedDate = today.toISOString().split('T')[0];
+    
+    // Get user name from the navigation bar
+    const customerName = document.getElementById('account-user-name').textContent.trim();
+    
+    // Get account number from the page
+    let accountNumber = document.querySelector('.account-number')?.textContent.trim();
+    // Fallback to a default if not found
+    if (!accountNumber) {
+      accountNumber = 'ACC123456';
+    }
+    
+    // Prepare the statement data structure
+    const statementData = {
+      "customerName": customerName,
+      "accountNumber": accountNumber,
+      "date": formattedDate,
+      "statementPeriod": statementPeriod,
+      "transactions": [],
+      "openingBalance": "$0.00",
+      "closingBalance": "$0.00"
+    };
+    
+    // Show loading indicator
+    const generateBtn = document.getElementById('generateStatementBtn');
+    const originalBtnText = generateBtn.textContent;
+    generateBtn.textContent = 'Loading...';
+    generateBtn.disabled = true;
+    
+    // Fetch transaction history from the server
+    fetch('/transactions')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch transaction history');
+        }
+        return response.json();
+      })
+      .then(historyData => {
+        // Process transaction data
+        if (Array.isArray(historyData)) {
+          // Format transactions for the statement
+          statementData.transactions = historyData.map(t => {
+            // Determine transaction type
+            let type = 'Debit';
+            let account = 'Checking';
+            
+            if (t.amount > 0) {
+              type = 'Credit';
+            }
+            
+            // Format amount as currency
+            const amountNum = Math.abs(t.amount) / 100; // Convert cents to dollars
+            const amountStr = t.amount > 0 ? `$${amountNum.toFixed(2)}` : `-$${amountNum.toFixed(2)}`;
+            
+            return {
+              "date": new Date(t.timestamp).toISOString().split('T')[0],
+              "type": type,
+              "account": account,
+              "label": t.label || (t.toAccountNum === accountNumber ? 'Deposit' : 'Payment'),
+              "amount": amountStr
+            };
+          });
+          
+          // Calculate opening and closing balances (simplified)
+          const currentBalance = document.getElementById('current-balance')?.textContent.trim() || '$0.00';
+          statementData.closingBalance = currentBalance;
+          
+          // Estimate opening balance based on transactions
+          const totalChange = historyData.reduce((sum, t) => sum + (t.amount / 100), 0);
+          const currentBalanceNum = parseFloat(currentBalance.replace(/[^0-9.-]+/g, ''));
+          const openingBalanceNum = currentBalanceNum - totalChange;
+          statementData.openingBalance = `$${Math.abs(openingBalanceNum).toFixed(2)}`;
+        }
+        
+        // Reset button
+        generateBtn.textContent = originalBtnText;
+        generateBtn.disabled = false;
+    
+        // Send data to external API and handle PDF download
+        fetch('/statement', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(statementData)
+        })
+        .then(response => {
+          // Check if the response is a PDF
+          const contentType = response.headers.get('content-type');
+          if (contentType && contentType.includes('application/pdf')) {
+            // It's a PDF, trigger download
+            return response.blob().then(blob => {
+              // Create a URL for the blob
+              const url = window.URL.createObjectURL(blob);
+              
+              // Create a temporary link element
+              const a = document.createElement('a');
+              a.style.display = 'none';
+              a.href = url;
+              
+              // Get filename from Content-Disposition header or use default
+              const contentDisposition = response.headers.get('content-disposition');
+              let filename = 'statement.pdf';
+              if (contentDisposition) {
+                const filenameMatch = contentDisposition.match(/filename="(.+)"/i);
+                if (filenameMatch && filenameMatch[1]) {
+                  filename = filenameMatch[1];
+                }
+              }
+              
+              a.download = filename;
+              document.body.appendChild(a);
+              a.click();
+              
+              // Cleanup
+              window.URL.revokeObjectURL(url);
+              document.body.removeChild(a);
+              
+              // Close the modal
+              $('#statementModal').modal('hide');
+              
+              // Show success message
+              alert('Statement downloaded successfully!');
+              
+              // Return null to break the chain
+              return null;
+            });
+          } else {
+            // It's not a PDF, handle as JSON
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok');
+          }
+        })
+      })
+      .catch(error => {
+        // Reset button in case of error
+        const generateBtn = document.getElementById('generateStatementBtn');
+        generateBtn.textContent = 'Generate';
+        generateBtn.disabled = false;
+        
+        console.error('Error generating statement:', error);
+        alert('Error generating statement. Please try again.');
+      });
   });
 </script>

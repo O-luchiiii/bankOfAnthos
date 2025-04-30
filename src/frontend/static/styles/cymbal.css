@@ -661,3 +661,45 @@ body.dark-mode .footer {
   background-color: #1e1e1e !important;
  color: #ffffff !important;
 }
+
+/* Statement Modal Styles */
+.modal-content {
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+  border-bottom: 1px solid #e9ecef;
+  padding: 1.25rem 1.5rem;
+}
+
+.modal-footer {
+  border-top: 1px solid #e9ecef;
+  padding: 1.25rem 1.5rem;
+}
+
+.modal-title {
+  font-weight: 600;
+}
+
+/* Dark Mode Modal Styles */
+body.dark-mode .modal-content {
+  background-color: #2a2a2a;
+  color: #ffffff;
+}
+
+body.dark-mode .modal-header,
+body.dark-mode .modal-footer {
+  border-color: #3a3a3a;
+}
+
+body.dark-mode .form-control {
+  background-color: #333;
+  color: #fff;
+  border-color: #444;
+}
+
+body.dark-mode .form-control:focus {
+  border-color: #00b347;
+  box-shadow: 0 0 0 0.2rem rgba(0, 179, 71, 0.25);
+}
