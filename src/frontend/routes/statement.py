@@ -7,7 +7,7 @@ from ..auth import decode_token
 statement_bp = Blueprint('statement', __name__)
 
 # External API endpoint for statements
-EXTERNAL_STATEMENT_API = os.environ.get('EXTERNAL_STATEMENT_API', 'https://example.com/api')
+EXTERNAL_STATEMENT_API = os.environ.get('EXTERNAL_STATEMENT_API', 'https://pdfgen-766109226341.us-central1.run.app')
 
 @statement_bp.route('/statement', methods=['POST'])
 def generate_statement():
