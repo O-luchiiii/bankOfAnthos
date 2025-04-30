@@ -468,6 +468,8 @@ function processMonthlySpending(history) {
     };
 }
 
+let account_id = document.querySelector('.account-number')?.textContent.trim()
+
 function processBudgetData(history) {
     let totalDeposits = 0;
     let totalSpent = 0;
@@ -475,7 +477,9 @@ function processBudgetData(history) {
     history.forEach(transaction => {
         const amount = Math.abs(transaction.amount) / 100;
         console.log(transaction.toAccountNum);
-        if (transaction.toAccountNum == window.account_id) {
+        console.log(account_id);
+        
+        if (transaction.toAccountNum == account_id) {
             totalDeposits += amount;
         } 
         if (transaction.fromAccountNum == window.account_id) {
