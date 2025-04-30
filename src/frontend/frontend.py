@@ -775,8 +775,6 @@ def create_app():
     def get_transactions():
         """Retrieve transaction history for the current user."""
         token = request.cookies.get(app.config['TOKEN_NAME'])
-        if token is None:
-            return redirect(url_for('login'))
 
         try:
             account_id = decode_token(token)['acct']
@@ -790,16 +788,20 @@ def create_app():
                 timeout=app.config['BACKEND_TIMEOUT']
             )
 
-            api_response = ApiCall(
-                display_name='transaction_history',
-                api_request=api_request,
+            # Create ApiCall and execute it
+            api_call = ApiCall(
+                display_name="transaction_history",
+                api_request=ApiRequest(url=f'{app.config["HISTORY_URI"]}/{account_id}',
+                                           headers=hed,
+                                           timeout=app.config['BACKEND_TIMEOUT']),
                 logger=app.logger
-            ).execute()
+            )
+            response = api_call.make_call()
 
-            if api_response is None:
+            if response is None:
                 return jsonify([]), 200
 
-            return jsonify(api_response.json()), 200
+            return jsonify(response.json()), 200
 
         except (HTTPError, RequestException) as e:
             app.logger.error('Error retrieving transaction history: %s', str(e))
