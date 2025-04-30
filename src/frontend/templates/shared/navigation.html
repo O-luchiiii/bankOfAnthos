@@ -13,24 +13,13 @@
       </a>
       {% endif %}
       <!-- Dark Mode Toggle Button (beside brand) -->
-      <button
-        id="theme-toggle"
-        class="btn btn-outline-secondary ml-3"
-        title="Toggle Dark Mode"
-      >
+      <button id="theme-toggle" class="btn btn-outline-secondary ml-3" title="Toggle Dark Mode">
         <span id="theme-icon">🌙</span>
                
       </button>
       {% if name %}
-      <button
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarNav"
-        aria-controls="navbarResponsive"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-        class="navbar-toggler navbar-toggler-right"
-      >
+      <button type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarResponsive"
+        aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler navbar-toggler-right">
         <span class="material-icons">menu</span>
       </button>
       <div class="justify-content-end collapse navbar-collapse" id="navbarNav">
@@ -42,15 +31,8 @@
             </a>
           </li>
           <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              id="accountDropdown"
-              role="button"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
+            <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
               <span>
                 <span id="account-user-name">{{ name }}</span>
               </span>
@@ -60,11 +42,8 @@
                 Generate Statement<i class="fa-icon-spacer fas fa-file-alt"></i>
               </a>
               <form id="logout-form" method="POST" action="/logout">
-                <a
-                  class="dropdown-item"
-                  onclick="document.querySelector('#logout-form').submit();"
-                  >Sign out<i class="fa-icon-spacer fas fa-sign-out-alt"></i
-                ></a>
+                <a class="dropdown-item" onclick="document.querySelector('#logout-form').submit();">Sign out<i
+                    class="fa-icon-spacer fas fa-sign-out-alt"></i></a>
               </form>
             </div>
           </li>
@@ -95,7 +74,8 @@
 </script>
 
 <!-- Statement Modal -->
-<div class="modal fade" id="statementModal" tabindex="-1" role="dialog" aria-labelledby="statementModalLabel" aria-hidden="true">
+<div class="modal fade" id="statementModal" tabindex="-1" role="dialog" aria-labelledby="statementModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -129,27 +109,27 @@
 
 <!-- Statement Generation Script -->
 <script>
-  document.getElementById('generateStatementBtn')?.addEventListener('click', function() {
+  document.getElementById('generateStatementBtn')?.addEventListener('click', function () {
     const statementPeriod = document.getElementById('statementPeriod').value;
     if (!statementPeriod) {
       alert('Please select a statement period');
       return;
     }
-    
+
     // Get current date
     const today = new Date();
     const formattedDate = today.toISOString().split('T')[0];
-    
+
     // Get user name from the navigation bar
     const customerName = document.getElementById('account-user-name').textContent.trim();
-    
+
     // Get account number from the page
     let accountNumber = document.querySelector('.account-number')?.textContent.trim();
     // Fallback to a default if not found
     if (!accountNumber) {
       accountNumber = 'ACC123456';
     }
-    
+
     // Prepare the statement data structure
     const statementData = {
       "customerName": customerName,
@@ -160,13 +140,13 @@
       "openingBalance": "$0.00",
       "closingBalance": "$0.00"
     };
-    
+
     // Show loading indicator
     const generateBtn = document.getElementById('generateStatementBtn');
     const originalBtnText = generateBtn.textContent;
     generateBtn.textContent = 'Loading...';
     generateBtn.disabled = true;
-    
+
     // Fetch transaction history from the server
     fetch('/transactions')
       .then(response => {
@@ -184,15 +164,15 @@
             // Determine transaction type
             let type = 'Debit';
             let account = 'Checking';
-            
+
             if (t.amount > 0) {
               type = 'Credit';
             }
-            
+
             // Format amount as currency
             const amountNum = Math.abs(t.amount) / 100; // Convert cents to dollars
             const amountStr = t.amount > 0 ? `$${amountNum.toFixed(2)}` : `-$${amountNum.toFixed(2)}`;
-            
+
             return {
               "date": new Date(t.timestamp).toISOString().split('T')[0],
               "type": type,
@@ -201,86 +181,117 @@
               "amount": amountStr
             };
           });
-          
+
           // Calculate opening and closing balances (simplified)
           const currentBalance = document.getElementById('current-balance')?.textContent.trim() || '$0.00';
           statementData.closingBalance = currentBalance;
-          
+
           // Estimate opening balance based on transactions
           const totalChange = historyData.reduce((sum, t) => sum + (t.amount / 100), 0);
           const currentBalanceNum = parseFloat(currentBalance.replace(/[^0-9.-]+/g, ''));
           const openingBalanceNum = currentBalanceNum - totalChange;
           statementData.openingBalance = `$${Math.abs(openingBalanceNum).toFixed(2)}`;
         }
-        
+        dummydata = {
+          "customerName": "John Doe",
+          "accountNumber": "ACC123456",
+          "date": "2023-05-15",
+          "statementPeriod": "April 1 - April 30, 2023",
+          "transactions": [
+            {
+              "date": "2023-04-05",
+              "type": "Credit",
+              "account": "Savings",
+              "label": "Deposit",
+              "amount": "$500.00"
+            },
+            {
+              "date": "2023-04-12",
+              "type": "Debit",
+              "account": "Checking",
+              "label": "Withdrawal",
+              "amount": "-$200.00"
+            },
+            {
+              "date": "2023-04-25",
+              "type": "Debit",
+              "account": "Checking",
+              "label": "Online Payment",
+              "amount": "-$150.00"
+            }
+          ],
+          "openingBalance": "$1,000.00",
+          "closingBalance": "$1,150.00"
+        }
+
         // Reset button
         generateBtn.textContent = originalBtnText;
         generateBtn.disabled = false;
-    
+
         // Send data to external API and handle PDF download
         fetch('/statement', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(statementData)
+          body: JSON.stringify(dummydata)
         })
-        .then(response => {
-          // Check if the response is a PDF
-          const contentType = response.headers.get('content-type');
-          if (contentType && contentType.includes('application/pdf')) {
-            // It's a PDF, trigger download
-            return response.blob().then(blob => {
-              // Create a URL for the blob
-              const url = window.URL.createObjectURL(blob);
-              
-              // Create a temporary link element
-              const a = document.createElement('a');
-              a.style.display = 'none';
-              a.href = url;
-              
-              // Get filename from Content-Disposition header or use default
-              const contentDisposition = response.headers.get('content-disposition');
-              let filename = 'statement.pdf';
-              if (contentDisposition) {
-                const filenameMatch = contentDisposition.match(/filename="(.+)"/i);
-                if (filenameMatch && filenameMatch[1]) {
-                  filename = filenameMatch[1];
+          .then(response => {
+            // Check if the response is a PDF
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('application/pdf')) {
+              // It's a PDF, trigger download
+              return response.blob().then(blob => {
+                // Create a URL for the blob
+                const url = window.URL.createObjectURL(blob);
+
+                // Create a temporary link element
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+
+                // Get filename from Content-Disposition header or use default
+                const contentDisposition = response.headers.get('content-disposition');
+                let filename = 'statement.pdf';
+                if (contentDisposition) {
+                  const filenameMatch = contentDisposition.match(/filename="(.+)"/i);
+                  if (filenameMatch && filenameMatch[1]) {
+                    filename = filenameMatch[1];
+                  }
                 }
+
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+
+                // Cleanup
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+
+                // Close the modal
+                $('#statementModal').modal('hide');
+
+                // Show success message
+                alert('Statement downloaded successfully!');
+
+                // Return null to break the chain
+                return null;
+              });
+            } else {
+              // It's not a PDF, handle as JSON
+              if (response.ok) {
+                return response.json();
               }
-              
-              a.download = filename;
-              document.body.appendChild(a);
-              a.click();
-              
-              // Cleanup
-              window.URL.revokeObjectURL(url);
-              document.body.removeChild(a);
-              
-              // Close the modal
-              $('#statementModal').modal('hide');
-              
-              // Show success message
-              alert('Statement downloaded successfully!');
-              
-              // Return null to break the chain
-              return null;
-            });
-          } else {
-            // It's not a PDF, handle as JSON
-            if (response.ok) {
-              return response.json();
+              throw new Error('Network response was not ok');
             }
-            throw new Error('Network response was not ok');
-          }
-        })
+          })
       })
       .catch(error => {
         // Reset button in case of error
         const generateBtn = document.getElementById('generateStatementBtn');
         generateBtn.textContent = 'Generate';
         generateBtn.disabled = false;
-        
+
         console.error('Error generating statement:', error);
         alert('Error generating statement. Please try again.');
       });
