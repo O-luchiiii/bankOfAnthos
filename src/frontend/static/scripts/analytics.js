@@ -358,7 +358,7 @@ document.addEventListener('DOMContentLoaded', function() {
         data: {
             labels: ['Spent', 'Remaining'],
             datasets: [{
-                data: [budgetData.spent, budgetData.remaining],
+                data: [budgetData.spent, -5],
                 backgroundColor: ['#002d6e', '#246df0']
             }]
         },
