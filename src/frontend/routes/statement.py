@@ -2,7 +2,6 @@ import os
 import json
 import requests
 from flask import Blueprint, request, jsonify, Response
-from ..auth import decode_token
 
 statement_bp = Blueprint('statement', __name__)
 
