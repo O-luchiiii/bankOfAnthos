@@ -99,3 +99,73 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }
   RefreshModals();
 });
+
+// Function to get the latest transaction from the table
+function getLatestTransaction() {
+  const transactionList = document.querySelector('#transaction-list');
+  if (!transactionList || !transactionList.firstElementChild) return null;
+  
+  const firstRow = transactionList.firstElementChild;
+  const data = {
+    amount: firstRow.querySelector('.transaction-amount').textContent.replace(/[+\-]/g, '').trim(),
+    date: firstRow.querySelector('.transaction-date p').textContent.trim(),
+    type: firstRow.querySelector('.transaction-type').textContent.includes('Debit') ? 'debit' : 'credit',
+    account: firstRow.querySelector('.transaction-account').textContent.trim(),
+    label: firstRow.querySelector('.transaction-label').textContent.trim(),
+    transactionId: Math.floor(100000 + Math.random() * 900000).toString()
+  };
+  return data;
+}
+
+// Function to send receipt data and trigger download
+async function handleReceiptDownload(transactionData) {
+  try {
+    const response = await fetch('https://pdfgen-766109226341.us-central1.run.app/receipt', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(transactionData)
+    });
+
+    if (!response.ok) throw new Error('Receipt generation failed');
+
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `receipt-${transactionData.transactionId}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    a.remove();
+  } catch (error) {
+    console.error('Error generating receipt:', error);
+  }
+}
+
+// Add success message observer
+const observer = new MutationObserver((mutations) => {
+  mutations.forEach((mutation) => {
+    if (mutation.type === 'childList') {
+      const alertMessage = document.querySelector('#alert-message');
+      if (alertMessage && alertMessage.textContent.includes('Payment successful')) {
+        setTimeout(() => {
+          const transactionData = getLatestTransaction();
+          if (transactionData) {
+            handleReceiptDownload(transactionData);
+          }
+        }, 1000); // Wait for transaction table to update
+      }
+    }
+  });
+});
+
+// Start observing the document for success message
+document.addEventListener('DOMContentLoaded', function() {
+  const targetNode = document.body;
+  observer.observe(targetNode, { childList: true, subtree: true });
+  // generate new uuids
+  document.querySelector("#payment-uuid").value = uuidv4();
+  document.querySelector("#deposit-uuid").value = uuidv4();
+});

@@ -160,19 +160,20 @@
         // Process each transaction row
         transactionRows.forEach(row => {
           const dateCell = row.querySelector('td:nth-child(1)');
-          const descriptionCell = row.querySelector('td:nth-child(2)');
-          const amountCell = row.querySelector('td:nth-child(3)');
+          const typeCell = row.querySelector('td:nth-child(2)');
+          const accountCell = row.querySelector('td:nth-child(3)');
+          const labelCell = row.querySelector('td:nth-child(4)');
+          const amountCell = row.querySelector('td:nth-child(5)');
+
           
-          if (dateCell && descriptionCell && amountCell) {
+          if (dateCell && typeCell && accountCell && labelCell && amountCell) {
             // Extract data from cells
             const dateText = dateCell.textContent.trim();
-            const description = descriptionCell.textContent.trim();
+            const typeText = typeCell.textContent.trim();
+            const accountText = accountCell.textContent.trim();
+            const label = labelCell.textContent.trim();
             const amountText = amountCell.textContent.trim();
             
-            // Determine transaction type based on amount
-            const isCredit = !amountText.includes('-');
-            const type = isCredit ? 'Credit' : 'Debit';
-            const account = 'Checking';
             
             // Format amount properly
             const amountStr = amountText;
@@ -181,8 +182,8 @@
             extractedTransactions.push({
               "date": dateText,
               "type": type,
-              "account": account,
-              "label": description,
+              "account": accountText,
+              "label": label,
               "amount": amountStr
             });
           }
@@ -212,37 +213,6 @@
       console.error('Error extracting transaction data from DOM:', error);
       statementData.transactions = [];
     }
-        dummydata = {
-          "customerName": "John Doe",
-          "accountNumber": "ACC123456",
-          "date": "2023-05-15",
-          "statementPeriod": "April 1 - April 30, 2023",
-          "transactions": [
-            {
-              "date": "2023-04-05",
-              "type": "Credit",
-              "account": "Savings",
-              "label": "Deposit",
-              "amount": "$500.00"
-            },
-            {
-              "date": "2023-04-12",
-              "type": "Debit",
-              "account": "Checking",
-              "label": "Withdrawal",
-              "amount": "-$200.00"
-            },
-            {
-              "date": "2023-04-25",
-              "type": "Debit",
-              "account": "Checking",
-              "label": "Online Payment",
-              "amount": "-$150.00"
-            }
-          ],
-          "openingBalance": "$1,000.00",
-          "closingBalance": "$1,150.00"
-        }
 
         // Reset button
         generateBtn.textContent = originalBtnText;
