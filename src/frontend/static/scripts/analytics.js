@@ -478,6 +478,7 @@ function processBudgetData(history) {
         const amount = Math.abs(transaction.amount) / 100;
         console.log(transaction.toAccountNum);
         console.log(account_id);
+        console.log(transaction.fromAccountNum);
         
         if (transaction.toAccountNum == account_id) {
             totalDeposits += amount;
