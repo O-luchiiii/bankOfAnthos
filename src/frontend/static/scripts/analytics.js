@@ -358,7 +358,7 @@ document.addEventListener('DOMContentLoaded', function() {
         data: {
             labels: ['Spent', 'Remaining'],
             datasets: [{
-                data: [budgetData.spent, -5],
+                data: [budgetData.spent, budgetData.remaining],
                 backgroundColor: ['#002d6e', '#246df0']
             }]
         },
@@ -469,12 +469,14 @@ function processMonthlySpending(history) {
 }
 
 function processBudgetData(history) {
-    let totalDeposits = 222;
+    let totalDeposits = 0;
     let totalSpent = 0;
 
     history.forEach(transaction => {
         const amount = Math.abs(transaction.amount) / 100;
         if (transaction.toAccountNum == window.account_id) {
+            console.log(transaction.toAccountNum);
+            console.log(window.account_id);
             totalDeposits += amount;
         } 
         if (transaction.fromAccountNum == window.account_id) {
